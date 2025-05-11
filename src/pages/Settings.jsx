@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addCategory, deleteCategory } from '../store/slices/categorySlice'
+import { addCategoryAsync, deleteCategory, fetchCategories } from '../store/slices/categorySlice'
 
 // Settings page with compact design
 function Settings() {
@@ -9,12 +9,20 @@ function Settings() {
     const [name, setName] = useState('')
     const [color, setColor] = useState('#000000')
 
-    const handleAddCategory = (e) => {
+    useEffect(() => {
+        dispatch(fetchCategories())
+    }, [dispatch])
+
+    const handleAddCategory = async (e) => {
         e.preventDefault()
         if (name) {
-            dispatch(addCategory({ name, color }))
-            setName('')
-            setColor('#000000')
+            try {
+                await dispatch(addCategoryAsync({ name, color }))
+                setName('')
+                setColor('#000000')
+            } catch (error) {
+                alert(error.message)
+            }
         }
     }
 

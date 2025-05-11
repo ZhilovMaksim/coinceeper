@@ -1,12 +1,21 @@
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import TransactionForm from '../components/TransactionForm'
 import TransactionList from '../components/TransactionList'
+import { fetchTransactions } from '../store/slices/transactionSlice'
+import { fetchCategories} from '../store/slices/categorySlice.js'
+
 
 // Dashboard with vertical layout
 function Dashboard() {
     const transactions = useSelector((state) => state.transactions.transactions)
+    const dispatch = useDispatch()
 
-    // Calculate balance
+    useEffect(() => {
+        dispatch(fetchTransactions())
+        dispatch(fetchCategories())
+    }, [dispatch])
+
     const balance = transactions.reduce((acc, t) => {
         return t.type === 'income' ? acc + t.amount : acc - t.amount
     }, 0)

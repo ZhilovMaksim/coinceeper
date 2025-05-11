@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTransaction } from '../store/slices/transactionSlice'
+import { addTransactionAsync } from '../store/slices/transactionSlice'
+import { fetchCategories} from '../store/slices/categorySlice.js'
 import useForm from '../hooks/useForm'
 
-// Transaction form with modern, playful design
 function TransactionForm() {
     const dispatch = useDispatch()
     const categories = useSelector((state) => state.categories.categories)
@@ -15,16 +15,23 @@ function TransactionForm() {
         comment: '',
     }
     const { values, errors, handleChange, validate, reset } = useForm(initialValues)
-    const [newCategory, setNewCategory] = useState('')
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        dispatch(fetchCategories())
+    }, [dispatch])
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (validate()) {
-            dispatch(addTransaction({
-                ...values,
-                amount: parseFloat(values.amount),
-            }))
-            reset()
+            try {
+                await dispatch(addTransactionAsync({
+                    ...values,
+                    amount: parseFloat(values.amount),
+                }))
+                reset()
+            } catch (error) {
+                alert(error.message)
+            }
         }
     }
 

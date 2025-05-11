@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { login } from '../store/slices/authSlice'
+import { loginAsync } from '../store/slices/authSlice'
 import { useNavigate } from 'react-router-dom'
 import useForm from '../hooks/useForm'
 
@@ -13,11 +13,15 @@ function Login() {
     }
     const { values, errors, handleChange, validate } = useForm(initialValues)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (validate()) {
-            dispatch(login({ email: values.email, password: values.password }))
-            navigate('/dashboard')
+            try {
+                await dispatch(loginAsync(values.email, values.password))
+                navigate('/dashboard')
+            } catch (error) {
+                alert(error.message)
+            }
         }
     }
 

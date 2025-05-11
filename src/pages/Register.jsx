@@ -1,8 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import useForm from '../hooks/useForm'
-import mockApi from '../utils/mockApi'
-import { login } from '../store/slices/authSlice'
+import { registerAsync } from '../store/slices/authSlice'
 
 // Register page with centered and rounded container
 function Register() {
@@ -17,9 +16,8 @@ function Register() {
         e.preventDefault()
         if (validate()) {
             try {
-                const user = await mockApi.register(values.email, values.password)
-                dispatch(login(user))
-                navigate('/dashboard')
+                await dispatch(registerAsync(values.email, values.password))
+                navigate('/login')
             } catch (error) {
                 alert(error.message)
             }

@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": "1746975646243",
+      "email": "testuser2@gmail.com",
+      "password": "$2b$10$s5rkPV8EpzqhjDNDu1iHYe7L3s8Paz.uWX/ptg8xjj1hl0gysVeu6"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1746975763648",
+      "userId": "1746975646243",
+      "type": "income",
+      "amount": 500,
+      "category": "1746975745483",
+      "date": "2025-05-11",
+      "comment": "dsc",
+      "createdAt": "2025-05-11T15:02:43.648Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1746975745483",
+      "userId": "1746975646243",
+      "name": "food",
+      "color": "#000000"
+    }
+  ]
+}

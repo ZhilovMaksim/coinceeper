@@ -1,12 +1,20 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
+import { fetchTransactions} from '../store/slices/transactionSlice'
+import {fetchCategories} from '../store/slices/categorySlice.js'
 
 // Stats page with compact sections
 function Stats() {
     const transactions = useSelector((state) => state.transactions.transactions)
     const categories = useSelector((state) => state.categories.categories)
     const [dateRange, setDateRange] = useState('all')
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTransactions())
+        dispatch(fetchCategories())
+    }, [dispatch])
 
     // Aggregate data by category
     const data = categories

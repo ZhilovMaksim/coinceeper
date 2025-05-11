@@ -1,11 +1,16 @@
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteTransaction } from '../store/slices/transactionSlice'
+import { deleteTransactionAsync, fetchTransactions } from '../store/slices/transactionSlice'
 
 // Transaction list with modern card design
 function TransactionList() {
     const transactions = useSelector((state) => state.transactions.transactions)
     const categories = useSelector((state) => state.categories.categories)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTransactions())
+    }, [dispatch])
 
     return (
         <div className="bg-white dark:bg-gray-700 rounded-xl shadow-md p-6">
@@ -42,7 +47,7 @@ function TransactionList() {
                                     )}
                                 </div>
                                 <button
-                                    onClick={() => dispatch(deleteTransaction(transaction.id))}
+                                    onClick={() => dispatch(deleteTransactionAsync(transaction.id))}
                                     className="text-red-500 hover:text-red-600 font-medium transition-colors duration-200"
                                 >
                                     Delete
